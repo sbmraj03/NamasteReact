@@ -1,11 +1,12 @@
 import { restaurants } from "../../Constants";
 import RestaurantCard from "./RestaurantCard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Shimmer from "./Shimmer";
 
 
-function filterData(searchText, RestaurantList){
-    const filterData= RestaurantList.filter((value) => 
-        value?.data?.data?.name.includes(searchText)
+function filterData(searchText, allRestaurantList){
+    const filterData= allRestaurantList.filter((value) => 
+        value?.info?.name?.toLowerCase()?.includes(searchText.toLowerCase())
     );
 
     return filterData;
@@ -13,14 +14,37 @@ function filterData(searchText, RestaurantList){
 }
 
 
-
 const Body = () => {
+    console.log("hello");
+  const [allRestaurantList, setAllRestaurantList] = useState([]);
   const [searchText, setSearchText] = useState("");
 
-  const [searchClicked, setSearchClicked] = useState("false");
+  const [filteredRestaurantList, setFilteredRestaurantList] =useState([]);
 
-  const [RestaurantList, setRestaurantList] =useState(restaurants);
-  return (
+  //empty dependency array => one after render
+  //dependencey array [searchText] => once after initial render + everytime after render (my searchText changes)
+  
+  useEffect( () => {
+    //API call
+    getRestaurants();
+  }, []);
+
+  async function getRestaurants() {
+    const data = await fetch(
+        "https://www.swiggy.com/mapi/homepage/getCards?lat=22.556914144090126&lng=88.30290164798497"
+    );
+    const response= await data.json();
+    console.log(response);
+    setAllRestaurantList(response?.data?.success?.cards[1]?.gridWidget?.gridElements?.infoWithStyle?.restaurants);
+    setFilteredRestaurantList(response?.data?.success?.cards[1]?.gridWidget?.gridElements?.infoWithStyle?.restaurants);
+
+}
+
+//to stop rendering the component (aka early return)
+//  if(!allRestaurantList) return null;
+  
+    if(filteredRestaurantList?.length ===0) return <h1>No Restaurants Found</h1>
+  return allRestaurantList.length===0 ? <Shimmer/> : (
     <>
 
      {/* search your restaurant */}
@@ -36,35 +60,21 @@ const Body = () => {
       <button className="btn"
             onClick={ () => {
                 //need to filter the data
-                const data= filterData(searchText,RestaurantList);
+                const data= filterData(searchText,allRestaurantList);
                 //update the state-restaurantList avl
-                setRestaurantList(data);
+                setFilteredRestaurantList(data);
             }}> Search-{searchText} </button>
 
-      
-      {/*   toggling the value of true and false */}
-      <h2>{searchClicked}</h2>
-      <button 
-            className="btn"
-            onClick={ () => {
-                if(searchClicked ==="true") setSearchClicked("false");
-                else setSearchClicked("true");
-            }}
-        >
-                setSearchClick
-      </button>
 
-
-        
       <div className="restaurant-list">
-
+            {/* /* write logic for no restaurants found here */}
         {/* earlier the below line was restaurants.map((value) */}
-        { RestaurantList.map((value) => { 
-          return <RestaurantCard {...value?.data?.data} key={value?.data?.data?.id} />; //do not use index as a key
+        { filteredRestaurantList.map((value) => { 
+          return <RestaurantCard {...value?.info} key={value?.info?.id} />  //do not use index as a key
         })}
       </div>
     </>
   );
-};
+}; 
 
 export default Body;

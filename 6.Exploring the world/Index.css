@@ -43,7 +43,7 @@
     border-radius: 5%;
 }
 
-.card > .infom {
+.card > .info {
     padding: 5px;
     color: grey
 }
@@ -54,10 +54,4 @@
 
 .restaurant{
     color: rgba(0, 0, 0, 0.817);
-}
-
-.shimmer {
-    width: 200px;
-    height: 100px;
-    background-color: rgba(128, 128, 128, 0.496);
 }
