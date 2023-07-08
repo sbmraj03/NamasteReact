@@ -1,10 +1,3 @@
-import {useState} from "react";
-
-const loggedInUser = () => {
-  //Api call to check authentication
-  return false;
-}
-
 const Title = () => (
     <div>
        <a href="/"/>
@@ -18,7 +11,6 @@ const Title = () => (
   );
 
   const Header= () => {
-    const [isLoggedIn, setIsLoggedIn] = useState("false");
     return(
         <div className="header">
             <Title/>
@@ -30,17 +22,7 @@ const Title = () => (
                 <li>Cart</li>
               </ul>
             </div>
-          {
-            // Js expressions work in props but not any statement
-            // ( (a=10), console.log(a)) // this is not statement this is js expression
-
-            isLoggedIn ? (
-              <button onClick= { () => setIsLoggedIn(false)}>LogOut</button> 
-              ) : (
-                <button onClick= { () => setIsLoggedIn(true)}>LogIn</button>
-              )
-          }
-        </div>
+        </div> 
     );
 };
 

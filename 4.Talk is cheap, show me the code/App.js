@@ -1435,7 +1435,6 @@ const RestaurantCard = ({name, cuisines, cloudinaryImageId, avgRating}) => {
 }
   
   
-
 const Header= () => {
     return(
         <div className="header">
@@ -1457,6 +1456,7 @@ const Footer = () => {
     <h4>Footer</h4>
   )
 }
+
 const Body= () => {
   return (
     <div className="restaurant-list">
