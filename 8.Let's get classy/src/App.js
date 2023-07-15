@@ -7,7 +7,8 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import About from "./components/About";
 import Error from "./components/Error";
 import Contact from "./components/Contact";
-import RestaurantMenu from "./components/RestaurantMenu";
+// import RestaurantMenu from "./components/RestaurantMenu";
+import Profile from "./components/Profile";
 
 
 const AppLayout = () => {
@@ -27,22 +28,30 @@ const appRouter= createBrowserRouter([
     element: <AppLayout />,
     errorElement: <Error />,
     children: [  //Now About is a children of  appLayout
-    {
-      path: "/",
-      element: <Body />,
-    }, 
-    {
-        path: "/about",
+     {
+        path: "/about",   //slash means from the root that is after localhost:1234
         element: <About />,
+        children: [
+          {
+            path: "profile", // parentPath/{path} ==> localhost:1234/about/profile
+            element: <Profile></Profile>
+          }
+        ]
       },
+    
+      {
+        path: "/",
+        element: <Body />,
+      }, 
+      
       {
         path: "/contact",
         element: <Contact />,
       },
-      {
-        path: "/restaurant/:id",
-        element: <RestaurantMenu />,
-      }
+      // {
+      //   path: "/restaurant/:id",
+      //   element: <RestaurantMenu />,
+      // }
     ],
   },
   

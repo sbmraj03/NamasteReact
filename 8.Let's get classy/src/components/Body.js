@@ -15,7 +15,6 @@ function filterData(searchText, allRestaurantList){
 
 
 const Body = () => {
-    console.log("hello");
   const [allRestaurantList, setAllRestaurantList] = useState([]);
   const [searchText, setSearchText] = useState("");
 
@@ -31,8 +30,8 @@ const Body = () => {
 
   async function getRestaurants() {
     const data = await fetch(
-        "https://www.swiggy.com/mapi/homepage/getCards?lat=22.556914144090126&lng=88.30290164798497"
-    );
+      "https://www.swiggy.com/mapi/homepage/getCards?lat=22.556914144090126&lng=88.30290164798497"
+      );
     const response= await data.json();
     console.log(response);
     setAllRestaurantList(response?.data?.success?.cards[4]?.gridWidget?.gridElements?.infoWithStyle?.restaurants);
